@@ -19,30 +19,29 @@ const CharacterCarousel = () => {
   };
 
   const handlePrevious = () => {
-    setCurrentIndex((currentIndex) =>
-      currentIndex === 0 ? characters.length - 1 : currentIndex - 1
+    setCurrentIndex((prevIndex) =>
+      prevIndex === 0 ? characters.length - 1 : prevIndex - 1
     );
   };
 
   const handleNext = () => {
-    setCurrentIndex((currentIndex) =>
-      currentIndex === characters.length - 1 ? 0 : currentIndex + 1
+    setCurrentIndex((prevIndex) =>
+      prevIndex === characters.length - 1 ? 0 : prevIndex + 1
     );
   };
 
   return (
     <>
-    <section className={styles.characterCarousel}>
-      <AnimatePresence initial={false} mode='wait'>
-        <motion.div
-          key={currentIndex}
-          initial={{ x: '100%' }}
-          animate={{ x: 0 }}
-          exit={{ x: '-100%' }}
-          transition={{ duration: 0.5 }}
-          className={styles.carouselItem}
-        >
-          <figure>
+      <section className={styles.characterCarousel}>
+        <AnimatePresence initial={false} mode='wait'>
+          <motion.figure
+            key={currentIndex}
+            initial={{ x: '100%', opacity: 0, scale: 0.7 }}
+            animate={{ x: 0, opacity: 1, scale: 1 }}
+            exit={{ x: '-100%', opacity: 0, scale: 0.7 }}
+            transition={{ duration: 0.5 }}
+            className={styles.carouselItem}
+          >
             <Image
               src={characters[currentIndex].image}
               alt={characters[currentIndex].name}
@@ -50,23 +49,22 @@ const CharacterCarousel = () => {
               height={500}
             />
             <figcaption>{characters[currentIndex].name}</figcaption>
-          </figure>
-          <input
-            type="checkbox"
-            checked={selectedCharacters.includes(characters[currentIndex].id)}
-            onChange={() => handleCharacterSelect(characters[currentIndex].id)}
-          />
-        </motion.div>
-      </AnimatePresence>
-    </section>
-          <nav className={styles.carouselControls}>
-          <button className={`${styles.carouselButton} ${styles.prevButton}`} onClick={handlePrevious}>
-            <span className={styles.goldButton}>Anterior</span>
-          </button>
-          <button className={`${styles.carouselButton} ${styles.nextButton}`} onClick={handleNext}>
-            <span className={styles.goldButton}>Siguiente</span>
-          </button>
-        </nav>
+          </motion.figure>
+        </AnimatePresence>
+        <input
+          type="checkbox"
+          checked={selectedCharacters.includes(characters[currentIndex].id)}
+          onChange={() => handleCharacterSelect(characters[currentIndex].id)}
+        />
+      </section>
+      <nav className={styles.carouselControls}>
+        <button className={`${styles.carouselButton} ${styles.prevButton}`} onClick={handlePrevious}>
+          <span className={styles.goldButton}>Anterior</span>
+        </button>
+        <button className={`${styles.carouselButton} ${styles.nextButton}`} onClick={handleNext}>
+          <span className={styles.goldButton}>Siguiente</span>
+        </button>
+      </nav>
     </>
   );
 };
