@@ -12,23 +12,24 @@ const variants = {
     x: direction > 0 ? 100 : -100,
     opacity: 0,
     scale: 0.7,
-    rotate: direction > 0 ? -50 : 50, 
+    rotateY: direction > 0 ? -90 : 90, 
   }),
   center: {
     zIndex: 1,
     x: 0,
     opacity: 1,
     scale: 1,
-    rotate: 0, 
+    rotateY: 0, 
   },
   exit: (direction) => ({
     zIndex: 0,
     x: direction < 0 ? 100 : -100,
     opacity: 0,
     scale: 0.7,
-    rotate: direction < 0 ? -50 : 50, 
+    rotateY: direction < 0 ? -90 : 90, 
   }),
 };
+
 
 
 const swipeConfidenceThreshold = 10000;
@@ -43,6 +44,7 @@ const CharacterCarousel = () => {
 
   const paginate = (newDirection) => {
     setPage([page + newDirection, newDirection]);
+    setCurrentIndex((prevIndex) => wrap(0, characters.length - 1, prevIndex + newDirection));
   };
 
   const handleCharacterSelect = (id) => {
@@ -53,18 +55,6 @@ const CharacterCarousel = () => {
     } else {
       setSelectedCharacters([...selectedCharacters, id]);
     }
-  };
-
-  const handlePrevious = () => {
-    setCurrentIndex((prevIndex) =>
-      prevIndex === 0 ? characters.length - 1 : prevIndex - 1
-    );
-  };
-
-  const handleNext = () => {
-    setCurrentIndex((prevIndex) =>
-      prevIndex === characters.length - 1 ? 0 : prevIndex + 1
-    );
   };
 
   return (
@@ -115,13 +105,13 @@ const CharacterCarousel = () => {
       <nav className={styles.carouselControls}>
         <button
           className={`${styles.carouselButton} ${styles.prevButton}`}
-          onClick={handlePrevious}
+          onClick={() => paginate(-1)}
         >
           <span className={styles.goldButton}>Anterior</span>
         </button>
         <button
           className={`${styles.carouselButton} ${styles.nextButton}`}
-          onClick={handleNext}
+          onClick={() => paginate(1)}
         >
           <span className={styles.goldButton}>Siguiente</span>
         </button>
